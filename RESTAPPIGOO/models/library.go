@@ -1,6 +1,6 @@
 package models
 
-type Librery struct {
+type Library struct {
 	Id      string `json:"id" bson:"_id"`
 	Name    string `json:"name" bson:"name"`
 	Address string `json:"address" bson:"address"`
