@@ -48,7 +48,7 @@ func CreateLibrary(c *fiber.Ctx) error {
 func DeleteLibrary(c *fiber.Ctx) error {
 	id := c.Params("id")
 	libraryCollection := database.GetCollection("libraries")
-	_, err := libraryCollection.DeleteOne(context.TODO(), bson.M{"id": id})
+	_, err := libraryCollection.DeleteOne(context.TODO(), bson.M{"_id": id})
 	if err != nil {
 		return err
 	}
