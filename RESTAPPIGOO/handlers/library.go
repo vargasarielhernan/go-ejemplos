@@ -10,8 +10,9 @@ import (
 )
 
 type libraryDTO struct {
-	Name    string `json:"name" bson:"name"`
-	Address string `json:"address" bson:"address"`
+	Name    string   `json:"name" bson:"name"`
+	Address string   `json:"address" bson:"address"`
+	Empty   []string `json:"no_exist" bson:"no_exist"`
 }
 
 // GET library
@@ -34,10 +35,22 @@ func CreateLibrary(c *fiber.Ctx) error {
 	if err := c.BodyParser(nLibrary); err != nil {
 		return err
 	}
+	nLibrary.Empty = make([]string, 0)
 	libraryCollection := database.GetCollection("libraries")
 	nDoc, err := libraryCollection.InsertOne(context.TODO(), nLibrary)
 	if err != nil {
 		return err
 	}
 	return c.JSON(fiber.Map{"id": nDoc.InsertedID})
+}
+
+// delete by id
+func DeleteLibrary(c *fiber.Ctx) error {
+	id := c.Params("id")
+	libraryCollection := database.GetCollection("libraries")
+	_, err := libraryCollection.DeleteOne(context.TODO(), bson.M{"id": id})
+	if err != nil {
+		return err
+	}
+	return c.SendString("delete successfully")
 }
